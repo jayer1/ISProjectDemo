@@ -1,0 +1,116 @@
+﻿@using IS_Proj_HIT.Models.ViewModels
+@model ListPatientsViewModel
+<link rel="stylesheet" href="~/css/site.css" />
+@{
+    ViewData["Title"] = "Patient List";
+}
+
+<div class="red">@Html.Raw(TempData["msg"])</div>
+<div class="card-header bg-primary text-white"><h4>Patient List</h4></div>
+@if (Model.Patients.Count() == 0)
+{
+    <div class="red">
+        <p>No patients found</p>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    @Html.ActionLink("MRN", "Index", new
+                    {
+                        sortOrder = ViewBag.MrnSortParm,
+                        searchLast = ViewBag.searchLast,
+                        searchFirst = ViewBag.searchFirst,
+                        searchSSN = ViewBag.searchSSN,
+                        searchMRN = ViewBag.searchMRN,
+                        searchDOB = ViewBag.searchDOB,
+                        searchDOBBefore = ViewBag.searchDOBBefore
+                    })
+                    @{
+                        if (ViewBag.sortOrder == "mrn_desc")
+                        {
+                            <i class="fa fa-angle-up"></i>
+                        }
+                        else if (ViewBag.sortOrder == "mrn")
+                        {
+                            <i class="fa fa-angle-down"></i>
+                        }
+                    }
+                </th>
+                <th scope="col">
+                    @Html.ActionLink("Name", "Index", new
+                    {
+                        sortOrder = ViewBag.NameSortParm,
+                        searchLast = ViewBag.searchLast,
+                        searchFirst = ViewBag.searchFirst,
+                        searchSSN = ViewBag.searchSSN,
+                        searchMRN = ViewBag.searchMRN,
+                        searchDOB = ViewBag.searchDOB,
+                        searchDOBBefore = ViewBag.searchDOBBefore
+                    })
+                    @{
+                        if (ViewBag.sortOrder == "name_desc")
+                        {
+                            <i class="fa fa-angle-up"></i>
+                        }
+                        else if (ViewBag.sortOrder == "name")
+                        {
+                            <i class="fa fa-angle-down"></i>
+                        }
+                    }
+                </th>
+                <th scope="col">
+                    @Html.ActionLink("Date of Birth", "Index", new
+                    {
+                        sortOrder = ViewBag.DobSortParm,
+                        searchLast = ViewBag.searchLast,
+                        searchFirst = ViewBag.searchFirst,
+                        searchSSN = ViewBag.searchSSN,
+                        searchMRN = ViewBag.searchMRN,
+                        searchDOB = ViewBag.searchDOB,
+                        searchDOBBefore = ViewBag.searchDOBBefore
+                    })
+                    @{
+                        if (ViewBag.sortOrder == "dob_desc")
+                        {
+                            <i class="fa fa-angle-up"></i>
+                        }
+                        else if (ViewBag.sortOrder == "dob")
+                        {
+                            <i class="fa fa-angle-down"></i>
+                        }
+                    }
+                </th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model.Patients)
+            {
+                <tr>
+                    <td>@patient.Mrn</td>
+                    <td>@patient.FirstName @patient.MiddleName @patient.LastName</td>
+                    <td>@patient.Dob.ToShortDateString()</td>
+                    @*<td>@patient.Religion.Name</td>
+                        <td>@patient.Gender.Name</td>
+                        <td>@patient.Ethnicity.Name</td>
+                        <td>@patient.MaritalStatus.Name</td>*@
+                    <td id="special">
+                        <a asp-action="Details" asp-route-id="@patient.Mrn" class="btn btn-outline-primary">Details</a>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+@*<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+    page-class="btn" page-class-normal="btn-secondary" page-class-selected="btn-primary"
+    class="btn-group" pull-right m-1></div>*@
+<hr />
+<a asp-action="AddPatient" class="btn btn-outline-primary"><i class="fa fa-plus" aria-hidden="true"></i> Create New Patient</a>
+<a asp-controller="home" asp-action="Index" class="btn btn-outline-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Home Page</a>
+<a asp-controller="Home" asp-action="PatientLookup" class="btn btn-outline-primary"><i class="fas fa-search"></i> Find Another Patient</a>

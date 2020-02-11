@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<br />
+<div class="card bg-secondary signup-form" style="padding:10px">
+    <form action="/examples/actions/confirmation.php" method="post">
+        <div class="card-header">
+            <h2>Register</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <input type="text" class="form-control" name="first_name" placeholder="First Name" required="required">
+                <input type="text" class="form-control" name="last_name" placeholder="Last Name" required="required">
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Email" required="required">
+                <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required="required">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Register Now</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,167 @@
+﻿@model IS_Proj_HIT.Models.Patient
+<link rel="stylesheet" href="~/css/site.css" />
+<div class="red">@Html.Raw(TempData["msg"])</div>
+<div class="red">@Html.Raw(TempData["msg1"])</div>
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary nav-fill w-100 widely">
+    <ul class="navbar-nav nav-fill w-100">
+        <li class="nav-item menu-item">
+            <button type="button" class="btn btn-danger">
+                <h4>Patient:&nbsp;@Model.FirstName&nbsp;@Model.MiddleName&nbsp;@Model.LastName</h4>
+            </button>
+        </li>
+        <li class="nav-item menu-item dob patientBanner"><span class="heading">DOB: </span> @Model.Dob.ToShortDateString()</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">Age: </span> <span class="age"></span> years</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">MRN: </span>@Model.Mrn</li>
+    </ul>
+</nav>
+<div class="card">
+    <div class="card-header bg-primary text-white"><h4>Patient Details</h4></div>
+    <div class="card-body bg-light">
+        <div class="container">
+            <span class="heading"> Alias(if any):</span><br />
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><span class="heading">First Name: </span>@(Model.AliasFirstName != null ? Model.AliasFirstName : "N/A") <br /></div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div>
+                        <span class="heading">Middle Initial: </span> @(Model.AliasMiddleName != null ? Model.AliasMiddleName : "N/A") <br />
+                    </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div>
+                        <span class="heading">Last Name: </span> @(Model.AliasLastName != null ? Model.AliasLastName : "N/A") <br />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><span class="heading"> Maiden Name: </span> @(Model.MaidenName != null ? Model.MaidenName : "N/A")</div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading">Mother's Maiden Name: </span> @(Model.MothersMaidenName != null ? Model.MothersMaidenName : "N/A")</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><span class="heading">Interpreter Needed? </span> @(Model.InterpreterNeeded ? "Yes" : "No")</div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading"> Deceased? </span>@(Model.DeceasedLiving ? "Yes" : "No") </div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading"> SSN: </span> <span id="Ssn">@Model.Ssn</span> </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><span class="heading">Religion: </span> @(Model.ReligionId == null ? "N/A" : Model.Religion.Name)</div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading">Marital Status: </span> @Model.MaritalStatus.Name</div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading">Gender: </span> @(Model.GenderId == null ? "N/A" : Model.Gender.Name) </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div><span class="heading">Sex: </span> @Model.Sex.Name</div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading">Ethnicity: </span> @Model.Ethnicity.Name</div>
+                </div>
+                <div class="col-sm-4 form-group">
+                    <div><span class="heading">Last Modified: </span> @Model.LastModified</div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+<a asp-action="ListAlerts" asp-route-id="@Model.Mrn" id="listAlertsButton" class="btn btn-outline-primary">
+    <i class="fas fa-exclamation-triangle alertColor"></i> Existing Alerts <span id="myCount" class="btn btn-dark btn-warning">
+    @ViewBag.PatientAlertsCount  </span>
+</a>
+<a asp-action="Edit" asp-route-id="@Model.Mrn" id="editButton" class="btn btn-outline-primary">Edit Patient</a>
+<a asp-controller="Home" asp-action="PatientLookup" class="btn btn-outline-primary"><i class="fas fa-search"></i> Find Another Patient</a>
+<a asp-action="AddEncounter" asp-route-id="@Model.Mrn" class="btn btn-outline-primary">
+    Add Encounter
+</a>
+
+@if (ViewBag.isThereEncounter)
+{
+<a asp-action="allPatientEncounters" asp-route-MRN="@Model.Mrn" id="editButton" class="btn btn-outline-primary float-right">View Patients Encounters</a>
+}
+
+@* Hiding Delete Patient for Now *@
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Administrator"))
+    {
+        @if (ViewBag.PatientAlertsCount == 0)
+        {
+        <a asp-action="DeletePatient" asp-route-id="@Model.Mrn" onclick="if (!confirm('Are you sure?')) return false" class="btn btn-outline-primary">Delete Patient</a>
+        }
+    }
+}
+<hr />
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script>
+
+    // Calc age in div in Details page
+    $(function () {
+
+
+        var dob = $('.dob').html();
+        var dob1 = $('.dob').val();
+        if (dob != '') {
+            var DateCreated = new Date(Date.parse(dob));
+            var today = new Date();
+
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+            $('.age').text(age);
+
+        }
+
+        if (dob1 != '') {
+            var DateCreated = new Date(Date.parse(dob1));
+            var today = new Date();
+
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+
+            $('.age').text(age);
+
+        }
+
+
+
+
+        // When page loads, if SSN field is on there, this adds the dashes
+        $(function () {
+            var val = $('#Ssn').text();
+            val.replace(/\D/g, '');
+            val = val.replace(/^(\d{3})/, '$1-');
+            val = val.replace(/-(\d{2})/, '-$1-');
+            val = val.replace(/(\d)-(\d{4}).*/, '$1-$2');
+            $('#Ssn').html(val);
+        });
+
+        
+
+
+
+        $('#formatSsnAndSubmitForm').hide();
+
+    });
+</script>

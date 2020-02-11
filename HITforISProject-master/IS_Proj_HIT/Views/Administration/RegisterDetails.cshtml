@@ -1,0 +1,81 @@
+﻿<link rel="stylesheet" href="~/css/forms.css" />
+<div class="bg-primary m-1 p-1 text-white"><h4>Complete Registration</h4></div>
+@model IS_Proj_HIT.Models.UserTable
+<div class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    Hello @User.Identity.Name, please complete your registration by providing the following information:
+</div>
+<form method="post" id="registerDetails" name="registerDetails" asp-action="RegisterDetails">
+    <div class="container" @*asp-validation-summary="All" *@></div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>First Name</label><br />
+            <input class="form-control" asp-for="@Model.FirstName" name="FirstName" id="FirstName" placeholder="First Name" />
+
+        </div>
+        <div class="col-sm-4 form-group">
+            <label>Last Name</label><br />
+            <input class="form-control" asp-for="@Model.LastName" name="lastName" id="LastName" placeholder="Last Name" />
+        </div>
+        @*<div class="col-sm-4">
+            <label>First Name: </label><br />
+            <textarea asp-for="@Model.FirstName" type="text">
+            </textarea>
+        </div>
+        <div class="form-group">
+            <label>Last Name</label><br />
+            <input asp-for="@Model.LastName" type="text" />
+        </div>*@
+    </div>
+
+    <div class="row">
+        @*<div class="col-sm-4">
+            <label>Program Enrolled In:</label><br />
+            <select class="form-control dropdowns" asp-for="@Model.ProgramEnrolledIn" asp-items="ViewBag.ProgramList"></select>
+        </div>*@
+
+        @*<div class="col-sm-4">
+            <label>Program Enrolled In: </label><br />
+            <textarea asp-for="@Model.ProgramEnrolledIn" type="text">
+            </textarea>
+        </div>*@
+
+
+        <div class="col-sm-4">
+            <label>Instructor Last Name</label><br />
+            <input class="form-control" asp-for="@Model.Instructor" placeholder="Instructor" type="text" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Start Date</label><br />
+            <input asp-for="@Model.StartDate" type="date" class="form-control startDate" id="longer" />
+        </div>
+        <div class="col-sm-4">
+            <label>End Date</label><br />
+            <input asp-for="@Model.EndDate" type="date" class="form-control endDate" id="longer" />
+        </div>
+    </div>
+    @*<div class="row">
+        <div class="col-sm-4">
+            <label>Facilities</label><br />
+            <select class="form-control dropdowns" asp-for="@Model.UserFacility" name="FacilityId" asp-items="ViewBag.Facilities"></select>
+
+        </div>
+    </div>*@
+
+    <br />
+    @*<input asp-for="@Model.LastModified" type="text" readonly hidden value="@(ViewBag.LastModified ?? String.Empty)" />*@
+    @*<input asp-for="@Model.AspNetUsersID" type="text" readonly hidden value="@(ViewBag.AspNetUserID ?? String.Empty)" />
+    <input asp-for="@Model.Email" type="text" readonly hidden value="@(ViewBag.Email ?? String.Empty)" />
+    <input asp-for="@Model.UserId" type="text" readonly hidden value="@(ViewBag.AspNetUserID ?? String.Empty)" />*@
+
+
+    <button class="btn-primary" type="submit">Submit</button>
+</form>
+<hr />
+<a asp-controller="home" asp-action="Index">Home</a>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"</script>
+

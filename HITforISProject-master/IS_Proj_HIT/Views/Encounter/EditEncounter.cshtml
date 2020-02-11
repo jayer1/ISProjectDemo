@@ -1,0 +1,211 @@
+﻿<link rel="stylesheet" href="~/css/forms.css" />
+@model IS_Proj_HIT.Models.Encounter
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary nav-fill w-100 widely">
+    <ul class="navbar-nav nav-fill w-100">
+        <li class="nav-item menu-item">
+            <button type="button" class="btn btn-danger">
+                <h4>Patient:&nbsp;@ViewBag.PatientFirstName&nbsp;@ViewBag.PatientMiddleName&nbsp;@ViewBag.PatientLastName</h4>
+            </button>
+        </li>
+        <li class="nav-item menu-item dob patientBanner"><span class="heading">DOB: </span> @ViewBag.PatientDob.ToShortDateString()</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">Age: </span> @ViewBag.PatientAge</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">MRN: </span>@(ViewBag.EncounterMRN ?? String.Empty)</li>
+    </ul>
+</nav>
+<div class="card">
+    <div class="card-header bg-primary text-white"><h4>Edit Encounter</h4></div>
+    <div class="card-body bg-light">
+        @if (!ViewBag.isPatientEncounter)
+        {
+            <form method="post" id="editEncounter" name="editEncounter" asp-action="EditEncounter">
+                <div class="container" asp-validation-summary="All"></div>
+                <input asp-for="@Model.PatientCurrentAge" type="hidden" value="@ViewBag.CurrentPatientAge" />
+                <input asp-for="@Model.Mrn" name="MRN" type="hidden" value="@ViewBag.EncounterMRN" />
+                <input asp-for="@Model.EncounterId" name="EncounterId" type="hidden" value="@ViewBag.EncounterId" />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <br /><label>Facility Registry Opt Out</label>
+                        <input asp-for="@Model.FacilityRegistryOptInOut" name="FacilityRegistryOptInOut" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Chief Complaint</label><br />
+                        <textarea asp-for="@Model.ChiefComplaint" name="ChiefComplaint" type="text" cols="50" rows="3">
+            </textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Facilities</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.FacilityId" asp-items="ViewBag.Facility"><option value="">Select Facility</option></select>
+                        <span asp-validation-for="FacilityId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Departments</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.DepartmentId" asp-items="ViewBag.Departments"><option value="">Select Department</option></select>
+                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Room Number</label><br />
+                        <input asp-for="@Model.RoomNumber" name="RoomNumber" placeholder="Room Number" type="text" pattern="\d*" maxlength="3" title="Please only enter positive integers" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Admission Type</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.AdmitTypeId" asp-items="ViewBag.AdmitTypes"><option value="">Select Admit Type</option></select>
+                        <span asp-validation-for="AdmitTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Admission Time</label><br />
+                        <input asp-for="@Model.AdmitDateTime" name="AdmitDateTime" type="datetime-local" value="@ViewBag.AdmitDateTime" id="admitDateTime" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Physicians</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.EncounterPhysiciansId" asp-items="ViewBag.EncounterPhysicians"><option value="">Select Encounter Physician</option></select>
+                        <span asp-validation-for="EncounterPhysiciansId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Encounter Types</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.EncounterTypeId" asp-items="ViewBag.EncounterTypes"><option value="">Select Encounter Type</option></select>
+                        <span asp-validation-for="EncounterTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Place of Service</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.PlaceOfServiceId" asp-items="ViewBag.PlacesOfService"><option value="">Select Places of Service</option></select>
+                        <span asp-validation-for="PlaceOfServiceId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Point of Origin</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.PointOfOriginId" asp-items="ViewBag.PointsOfOrigin"><option value="">Select Point of Origin</option></select>
+                        <span asp-validation-for="PointOfOriginId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Discharge Disposition</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.DischargeDisposition" asp-items="ViewBag.Discharges"><option value="">Select Discharge Disposition</option></select>
+                        <span asp-validation-for="DischargeDisposition" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Discharge Time</label><br />
+                        <input asp-for="@Model.DischargeDateTime" name="DischargeDateTime" type="datetime-local">
+                    </div>
+                </div>
+                <br />
+                <input asp-for="@Model.LastModified" type="text" readonly hidden value="@(ViewBag.LastModified ?? String.Empty)" />
+                <button class="btn-primary" type="submit">Save</button>
+            </form>
+        }
+        @if (ViewBag.isPatientEncounter)
+        {
+            <form method="post" id="editPatientEncounter" name="editPatientEncounter" asp-action="EditPatientEncounter">
+                <div class="container" asp-validation-summary="All"></div>
+                <input asp-for="@Model.PatientCurrentAge" type="hidden" value="@ViewBag.CurrentPatientAge" />
+                <input asp-for="@Model.Mrn" name="MRN" type="hidden" value="@ViewBag.EncounterMRN" />
+                <input asp-for="@Model.EncounterId" name="EncounterId" type="hidden" value="@ViewBag.EncounterId" />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <br /><label>Facility Registry Opt Out</label>
+                        <input asp-for="@Model.FacilityRegistryOptInOut" name="FacilityRegistryOptInOut" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Chief Complaint</label><br />
+                        <textarea asp-for="@Model.ChiefComplaint" name="ChiefComplaint" type="text" cols="50" rows="3">
+            </textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Facilities</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.FacilityId" asp-items="ViewBag.Facility"><option value="">Select Facility</option></select>
+                        <span asp-validation-for="FacilityId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Departments</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.DepartmentId" asp-items="ViewBag.Departments"><option value="">Select Department</option></select>
+                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Room Number</label><br />
+                        <input asp-for="@Model.RoomNumber" name="RoomNumber" placeholder="Room Number" type="text" pattern="\d*" maxlength="3" title="Please only enter positive integers" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Admission Type</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.AdmitTypeId" asp-items="ViewBag.AdmitTypes"><option value="">Select Admit Type</option></select>
+                        <span asp-validation-for="AdmitTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Admission Time</label><br />
+                        <input asp-for="@Model.AdmitDateTime" name="AdmitDateTime" type="datetime-local" value="@ViewBag.AdmitDateTime" id="admitDateTime" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Physicians</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.EncounterPhysiciansId" asp-items="ViewBag.EncounterPhysicians"><option value="">Select Encounter Physician</option></select>
+                        <span asp-validation-for="EncounterPhysiciansId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Encounter Types</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.EncounterTypeId" asp-items="ViewBag.EncounterTypes"><option value="">Select Encounter Type</option></select>
+                        <span asp-validation-for="EncounterTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Place of Service</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.PlaceOfServiceId" asp-items="ViewBag.PlacesOfService"><option value="">Select Places of Service</option></select>
+                        <span asp-validation-for="PlaceOfServiceId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Point of Origin</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.PointOfOriginId" asp-items="ViewBag.PointsOfOrigin"><option value="">Select Point of Origin</option></select>
+                        <span asp-validation-for="PointOfOriginId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label>Discharge Disposition</label><br />
+                        <select class="form-control dropdowns" asp-for="@Model.DischargeDisposition" asp-items="ViewBag.Discharges"><option value="">Select Discharge Disposition</option></select>
+                        <span asp-validation-for="DischargeDisposition" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Discharge Time</label><br />
+                        <input asp-for="@Model.DischargeDateTime" name="DischargeDateTime" type="datetime-local">
+                    </div>
+                </div>
+                <br />
+                <input asp-for="@Model.LastModified" type="text" readonly hidden value="@(ViewBag.LastModified ?? String.Empty)" />
+                <button class="btn-primary" type="submit">Save</button>
+            </form>
+        }
+    </div>
+</div>
+<hr />
+@if (!ViewBag.isPatientEncounter)
+{
+    <a asp-action="Index" class="btn btn-outline-primary">Back to Encounters</a>
+    <a asp-action="PatientEncounters" asp-route-patientMRN="@Model.Mrn" class="btn btn-outline-primary float-right">See all Encounters for this patient</a>
+}
+
+@if (ViewBag.isPatientEncounter)
+{
+    <a asp-action="PatientEncounters" asp-route-patientMRN="@Model.Mrn" class="btn btn-outline-primary">Back to  @ViewBag.PatientFirstName's Encounters</a>
+}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"</script>
+
+

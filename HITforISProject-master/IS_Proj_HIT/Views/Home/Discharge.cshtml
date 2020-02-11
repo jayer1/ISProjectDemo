@@ -1,0 +1,27 @@
+﻿@using isprojectHiT.Models
+@model IEnumerable<Discharge>
+<table>
+    <thead>
+        <tr><th>Discharge ID</th><th>Name</th><th>Wi Pop Code</th><th>Last Modified</th></tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (Discharge d in Model)
+            {
+                <tr>
+                    <td>@d.DischargeId</td>
+                    <td>@d.Name</td>
+                    <td>@d.WiPopCode</td>
+                    <td>@d.LastModified</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <li>No Discharges found</li>
+        }
+    </tbody>
+</table>
+
+<div id="pagingDiv">@Html.Raw(ViewBag.Paging)</div>

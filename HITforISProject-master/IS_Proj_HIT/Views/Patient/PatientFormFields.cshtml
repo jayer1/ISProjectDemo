@@ -1,0 +1,116 @@
+﻿@model IS_Proj_HIT.Models.Patient
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/chosen.min.css" />
+<div class="container" asp-validation-summary="All"></div>
+<div class="col-sm-4" hidden>
+    <label>MRN</label><br />
+    <input asp-for="@Model.Mrn" name="Mrn" class="mrn" />
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <label>First Name</label><br />
+        <input class="form-control" asp-for="@Model.FirstName" data-toggle="tooltip" data-placement="top" title="Enter person's first name" name="FirstName" id="FirstName" placeholder="First Name" />
+
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Middle Initial</label><br />
+        <input class="form-control" asp-for="@Model.MiddleName" data-toggle="tooltip" data-placement="top" title="Enter person's middle initial" name="MiddleName" id="MiddleName" placeholder="Middle Initial" maxlength="1" />
+
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Last Name</label><br />
+        <input class="form-control" asp-for="@Model.LastName" data-toggle="tooltip" data-placement="top" title="Enter person's last name" name="lastName" id="LastName" placeholder="Last Name" />
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <label>Alias First Name</label>
+        <input class="form-control" asp-for="@Model.AliasFirstName" name="aliasFirstName" placeholder="Alias First Name" />
+
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Alias Middle Initial</label>
+        <input class="form-control" asp-for="@Model.AliasMiddleName" name="aliasMiddleName" placeholder="Alias Middle Initial" maxlength="1" />
+
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Alias Last Name</label>
+        <input class="form-control" asp-for="@Model.AliasLastName" name="aliasLastName" placeholder="Alias Last Name" />
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <label>Maiden Name</label>
+        <input class="form-control" asp-for="@Model.MaidenName" name="MaidenName" placeholder="Maiden Name" />
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Mother's Maiden Name</label>
+        <input class="form-control" asp-for="@Model.MothersMaidenName" name="MothersMaidenName" placeholder="Mother's Maiden Name" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group" >
+        <label for="interp">Interpreter Needed? </label>
+        <input id="interp" asp-for="@Model.InterpreterNeeded" />
+    </div>
+    <div class="col-sm-4 form-group">
+        <label for="deceased">Deceased? </label>
+        <input id="deceased" asp-for="@Model.DeceasedLiving" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <label>SSN</label><br />
+        <input asp-for="@Model.Ssn" name="Ssn" id="Ssn" maxlength="11" placeholder="SSN" />
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>DOB</label><br />
+        <input type="date" asp-for="@Model.Dob" name="Dob" class="dob" placeholder="Date of Birth" />
+    </div>
+    <div class="col-sm-4 form-group">
+        <label class="ageLabel">Age</label><br />
+        <div class="age" type="date"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <label>Marital Status</label><br />
+        @*@Html.DropDownList("MaritalStatusId", (SelectList)ViewBag.MaritalStatus, "--Select Marital Status--", new { @class = "form-control chosen" , required = "required" })*@
+
+        <select class="form-control chosen dropdowns" asp-for="@Model.MaritalStatusId" asp-items="ViewBag.MaritalStatus"><option value="">Select Marital Status</option></select>
+        <span asp-validation-for="MaritalStatusId" class="text-danger"></span>
+
+    </div>
+    <div class="col-sm-4">
+        <label>Ethnicity ID</label><br />
+        <select class="form-control chosen dropdowns" asp-for="@Model.EthnicityId" asp-items="ViewBag.Ethnicity"><option value="">Select Ethnicity</option></select>
+        @*@Html.DropDownList("EthnicityId", (SelectList)ViewBag.Ethnicity, "--Select Ethnicity--", new { @class = "form-control" })*@
+        <span asp-validation-for="EthnicityId" class="text-danger"></span>
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Religion</label> <br />
+        @*@Html.DropDownList("ReligionId", (SelectList)ViewBag.Religions, "--Select Religion--", new { @class = "form-control chosen" })*@
+        <select class="form-control chosen dropdowns" asp-for="@Model.ReligionId" asp-items="ViewBag.Religions"></select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4 form-group">
+        <label>Sex</label><br />
+
+            @*@Html.DropDownList("SexId", (SelectList)ViewBag.Sexes, "--Select Sex--", new { @name = "sex", @class = "form-control chosen" })*@
+            <select class="form-control chosen dropdowns" asp-for="@Model.SexId" asp-items="ViewBag.Sexes"><option value="">Select Sex</option></select>
+            <span asp-validation-for="SexId" class="text-danger"></span>
+    </div>
+    <div class="col-sm-4 form-group">
+        <label>Gender</label><br />
+        @*@Html.DropDownList("GenderId", (SelectList)ViewBag.Gender, "--Select Gender--", new { @class = "chosen" })*@
+        <select class="form-control chosen dropdowns" asp-for="@Model.GenderId" asp-items="ViewBag.Gender"><option value="">Select Gender</option></select>
+    </div>
+</div>
+
+@*Employment drop down was here*@
+
+<br />
+<input asp-for="@Model.LastModified" type="text" hidden readonly value="@(ViewBag.LastModified ?? String.Empty)" />

@@ -1,0 +1,13 @@
+﻿@using IS_Proj_HIT.ViewModels
+@model UsersPlusViewModel
+@{
+    ViewData["Title"] = "DisplayFacilities";
+}
+
+<h1>DisplayFacilities</h1>
+
+<label>Facilities</label>
+<select class="form-control dropdowns" asp-for="@Model.FacilityId" asp-items="ViewBag.Facilities"></select>
+
+
+

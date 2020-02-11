@@ -1,0 +1,47 @@
+﻿@using IS_Proj_HIT.Models.ViewModels
+@model IEnumerable<IS_Proj_HIT.ViewModels.EncounterPatientViewModel>
+@{
+    ViewData["Title"] = "Encounter List";
+    string PatientMRN = "";
+}
+<script>
+    console.log(@ViewBag.patientEncounters);
+</script>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">MRN</th>
+            <th scope="col">Name</th>
+            <th scope="col">Admit Time</th>
+            <th scope="col">Facility</th>
+            <th scope="col">Discharge Time</th>
+            <th scope="col">Edit Encounter</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var encounter in Model)
+        {
+            <tr>
+                <td>@encounter.Mrn</td>
+                <td>@encounter.FirstName @encounter.LastName</td>
+                <td>@encounter.AdmitDateTime</td>
+                <td>@encounter.FacilityName</td>
+                <td>@encounter.DischargeDateTime</td>
+                <td id="special">
+                    <a asp-action="EditEncounter" asp-route-encounterId="@encounter.EncounterId" asp-route-isPatientEncounter="@true" class="btn btn-outline-primary">Edit</a>
+                    <a onclick="deleteCheck(@encounter.FirstName, @encounter.LastName, @encounter.AdmitDateTime)" asp-action="DeleteEncounter" asp-route-encounterId="@encounter.EncounterId" class="btn btn-danger">Delete</a>
+                    <a asp-action="DeleteEncounter" asp-route-encounterId="@encounter.EncounterId" id="goDelete" class="btn" hidden>hidden</a>
+                <td></td>
+            </tr>
+            PatientMRN = encounter.Mrn;
+        }
+        
+    </tbody>
+</table>
+@if (PatientMRN != "")
+{
+    <a asp-controller="Patient" asp-action="BackToDetails" asp-route-id="@PatientMRN" class="btn btn-outline-primary">
+        <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> View Patient Details
+    </a>
+}

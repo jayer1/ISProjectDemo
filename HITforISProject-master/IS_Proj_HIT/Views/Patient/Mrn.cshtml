@@ -1,0 +1,5 @@
+﻿@model IS_Proj_HIT.Models.Patient
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<input asp-for="@Model.Mrn" type="text" readonly value="@(ViewBag.MRN ?? String.Empty)" />

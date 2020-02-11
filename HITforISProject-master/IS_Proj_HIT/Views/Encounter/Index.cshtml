@@ -1,0 +1,45 @@
+﻿@using IS_Proj_HIT.Models.ViewModels
+@model IEnumerable<IS_Proj_HIT.ViewModels.EncounterPatientViewModel>
+@{
+    ViewData["Title"] = "Encounter List";
+}
+<script>
+    console.log(@ViewBag.patientEncounters);
+</script>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">MRN</th>
+            <th scope="col">Name</th>
+            <th scope="col">Admit Time</th>
+            <th scope="col">Facility</th>
+            <th scope="col">Discharge Time</th>
+            <th scope="col">Edit Encounter</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var encounter in Model)
+        {
+            <tr>
+                <td>@encounter.Mrn</td>
+                <td>@encounter.FirstName @encounter.LastName</td>
+                <td>@encounter.AdmitDateTime</td>
+                <td>@encounter.FacilityName</td>
+                <td>@encounter.DischargeDateTime</td>
+                <td id="special">
+                    <a asp-action="EditEncounter" asp-route-encounterId="@encounter.EncounterId" asp-route-isPatientEncounter="@false" class="btn btn-outline-primary">Edit</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a asp-action="DeleteEncounter" asp-route-encounterId="@encounter.EncounterId" onclick="if (!confirm('Are you sure you want to delete this encounter?')) return false" class="btn btn-danger">Delete</a>
+                        }
+                    }
+                    <a asp-action="DeleteEncounter" asp-route-encounterId="@encounter.EncounterId" id="goDelete" class="btn" hidden>hidden</a>
+            <td></td>
+            </tr>
+        }
+
+    </tbody>
+</table>

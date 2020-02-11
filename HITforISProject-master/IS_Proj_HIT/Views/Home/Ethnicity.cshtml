@@ -1,0 +1,15 @@
+﻿@using isprojectHiT.Models
+@model IEnumerable<Ethnicity>
+<ul>
+    @if (Model != null)
+    {
+        @foreach (Ethnicity e in Model)
+        {
+            <li>@e.Name</li>
+        }
+    }
+    else
+    {
+        <li>No Ethnicities found</li>
+    }
+</ul>

@@ -1,0 +1,96 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4>Create a new account.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" id="privacyCheckbox" asp-for="PrivacyPolicyIsChecked">
+                <button id="privacyBtn" type="button" data-toggle="modal" style="border: none; background: none; padding: 0; color: #0606cc; text-decoration: underline; cursor: pointer;"> I agree to HIT Privacy Policy</button>
+                <span asp-validation-for="PrivacyPolicyIsChecked" class="text-danger"></span>
+            </div>
+
+
+
+            <div id="Submit">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+<!-- The Privacy Modal -->
+<div class="modal fade" id="privacyModal" role="dialog" data-backdrop="false">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="font-weight: bold">HIT Privacy Policy</h4>
+            </div>
+            <div class="modal-body">
+                <p>This Privacy Policy was last modified on 12/01/2019.</p><br />
+                <p>WCTC HIT operates this "Site." This page informs you of our policies regarding the collection, use, and dislosure of Personal Information we receive from users of the Site.</p>
+                <p>We use your Personal Informaion only for providing and improving the Site. By using the Site, you agree to the collection and use of information in accordance with this policy.</p>
+                <p style="font-weight: bold">Information we collect and use</p>
+                <p>While using our Site, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable information may include, but is not limited to your name.</p>
+                <p style="font-weight: bold">Log Data</p>
+                <p>Like many site operators, we collect information that your browser sends whenevery you visit our Site. This "Log Data" may include information such as your IP address, browser type and version, pages of our Site that you visit, the time and date of your visit, the time spent on those pages and other statistics.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            //click function to open privacy modal
+            $("#privacyBtn").click(function () {
+                $("#privacyModal").modal()
+            });
+
+            //hide the register button until the privacy agreement is checked
+            $("#Submit").hide();
+
+            //reveals the register button when privacy checkbox is checked
+            $(function () {
+                $('#privacyCheckbox').change(function () {
+                    $('#Submit').toggle($(this).is(':checked'));
+                });
+            });
+        });
+    </script>
+
+}

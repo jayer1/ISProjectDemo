@@ -1,0 +1,255 @@
+﻿@model IS_Proj_HIT.ViewModels.AlertsViewModel
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/chosen.min.css" />
+@{
+    ViewData["Title"] = "Add Patient Alert";
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary nav-fill w-100 widely">
+    <ul class="navbar-nav nav-fill w-100">
+        <li class="nav-item menu-item">
+            <button type="button" class="btn btn-danger">
+                <h4>Patient&nbsp;@ViewBag.FirstName&nbsp;@ViewBag.MiddleName&nbsp;@ViewBag.LastName</h4>
+            </button>
+        </li>
+
+        <li class="nav-item menu-item dob patientBanner"><span class="heading">&nbsp;DOB: </span> @ViewBag.Dob.ToShortDateString()</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">Age: </span> <span class="age"></span> years</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">MRN: </span> @ViewBag.myMrn</li>
+    </ul>
+</nav>
+<div id="alertDiv">
+    <div class="form-group"><i class="fas fa-exclamation-triangle alertColor"></i> Add An Alert</div>
+    <div id="message"></div>
+    <form method="post" id="alert" name="alert" asp-action="AddAlert">
+        <div class="form-group">
+            <label>Alert Type</label><br />
+            @*<select class="form-control dropdowns" asp-for="@Model.MaritalStatusId" asp-items="ViewBag.MaritalStatus"><option value="">Select Marital Status</option></select>
+            <span asp-validation-for="MaritalStatusId" class="text-danger"></span>*@
+            <select class="form-control selectable chosen" id="alertType" asp-for="@Model.AlertTypeId" asp-items="ViewBag.AlertType"><option value="0">Select Alert Type</option></select>
+        </div>
+        <div class="form-group" id="fallRiskList">
+            <label>Fall Risk</label><br />
+            @*@Html.DropDownList("FallRiskId", (SelectList)ViewBag.PatientFallRisk, "--Select One--")*@
+            <select class="form-control selectable chosen" required asp-for="@Model.FallRiskId" asp-items="ViewBag.PatientFallRisk"><option value="0">Select Fall Risk</option></select>
+            
+        </div>
+        <div class="form-group" id="restrictionList">
+            <label>Restriction</label><br />
+            @*@Html.DropDownList("RestrictionId", (SelectList)ViewBag.PatientRestriction, "--Select One--")*@
+            <select class="form-control selectable chosen" asp-for="@Model.RestrictionTypeId" asp-items="ViewBag.Restriction"><option value="0">Select Restriction</option></select>
+        </div>
+
+        <div class="form-group" id="allergenList">
+            <label>Allergy</label><br />
+            <select class="form-control selectable chosen" id="allergylist" asp-for="@Model.AllergenId" asp-items="ViewBag.Allergens"><option value="0">Select Allergen</option></select>
+        </div>
+        <div class="form-group" id="reactionList">
+            <label>Reaction</label><br />
+            <select class="form-control selectable chosen" id="reactionlist" asp-for="@Model.ReactionId" asp-items="ViewBag.Reactions"><option value="0">Select Reaction</option></select>
+        </div>
+
+        <div class="form-group" hidden>
+            <label>MRN</label><br />
+            <input asp-for="@Model.Mrn" value="@ViewBag.MRN" name="Mrn" id="mrn" readonly data-toggle="popover" data-placement="top" title="This unique ID identifies the patient" maxlength="6" />
+        </div>
+        <div class="form-group">
+            <label>Comments</label><br />
+            <textarea asp-for="@Model.Comments" name="comments" cols="60" rows="3"></textarea>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>Start Date</label>
+                <input asp-for="@Model.StartDate" class="form-control startDate" type="date" id="longer"/>
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>End Date</label><br />
+                <input asp-for="@Model.EndDate" class="form-control endDate" type="date" name="EndDate" id="longer2" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Last Modified</label><br />
+            <input asp-for="@Model.LastModified" type="text" id="longer" readonly value="@(ViewBag.LastModified ?? String.Empty)" />
+        </div>
+        <button class="btn btn-primary" type="button" id="chk4nulls">Create Alert</button>
+        <button class="btn btn-outline-primary" id="realSubmit" hidden type="submit">Create Alert</button>
+        <a asp-controller="Patient" asp-action="BackToDetails" asp-route-id="@ViewBag.myMrn" class="btn btn-outline-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Details</a>
+    </form>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script>
+    // Alert Type drop down list from Add Alert in Patients area
+    $(function () {
+
+        $('#chk4nulls').on('click', function () {
+            var alerttypevalue = $('#alertType').val();
+            var allergies = $('#allergylist').val();
+            var reactions = $('#reactionlist').val();
+            var restrictions = $('#RestrictionTypeId').val();
+            var fallrisks = $('#FallRiskId').val();
+            $('#message').text('');
+        
+            if (alerttypevalue == '0') {
+                $('#message').text('Please select an Alert Type.');
+                //alert('Please select an Alert Type');
+            } else if (allergies == '0') {
+                $('#message').text('Please select an Allergen.');
+            } else if (reactions == '0') {
+                $('#message').text('Please select a Reaction.');
+            } else if (fallrisks == '0') {
+                $('#message').text('Please select a Fall Risk.');
+            } else if (restrictions == '0') {
+                $('#message').text('Please select a Restriction.');
+            }
+            else {
+                $('#realSubmit').click();
+            }
+
+        });
+
+        $('#allergylist').on('change', function () {
+            var reactions = $('#reactionlist').val();
+            if (reactions == '0') {
+                $('#message').text('Please select a Reaction.');
+            }
+        });
+
+        $('.selectable').on('change', function () {
+
+                $('#message').text('');
+            
+        });
+
+
+        // show age in patient banner
+        var dob = $('.dob').html();
+        var dob1 = $('.dob').val();
+        if (dob != '') {
+            var DateCreated = new Date(Date.parse(dob));
+            var today = new Date();
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+            $('.age').text(age);
+        }
+        if (dob1 != '') {
+            var DateCreated = new Date(Date.parse(dob1));
+            var today = new Date();
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+            $('.age').text(age);
+        }
+        // On page load...
+        $('#allergenList').hide();
+        $('#reactionList').hide();
+        $('#fallRiskList').hide();
+        $('#restrictionList').hide();
+        $('#alertType').on('change', function () {
+            console.log("Value is: " + $("#alertType option:selected").text());
+            if ($("#alertType option:selected").text() == 'Fall Risk') {
+                //Will need to clear out values
+                $('#allergylist').val('1');
+                $('#reactionlist').val('1');
+                $('#FallRiskId').val('0');
+                $('#RestrictionTypeId').val('1');
+                $('#allergenList').hide();
+                $('#reactionList').hide();
+                $('#fallRiskList').show();
+                $('#restrictionList').hide();
+            } else if ($("#alertType option:selected").text() == 'Restricted Access') {
+                $('#allergylist').val('1');
+                $('#reactionlist').val('1');
+                $('#FallRiskId').val('1');
+                $('#RestrictionTypeId').val('0');
+                $('#allergenList').hide();
+                $('#reactionList').hide();
+                $('#fallRiskList').hide();
+                $('#restrictionList').show();
+            } else if ($("#alertType option:selected").text() == 'Allergy') {
+                $('#allergylist').val('0');
+                $('#reactionlist').val('0');
+                $('#FallRiskId').val('1');
+                $('#RestrictionTypeId').val('1');
+                $('#allergenList').show();
+                $('#reactionList').show();
+                $('#fallRiskList').hide();
+                $('#restrictionList').hide();
+            } else if ($("#alertType option:selected").text() == 'Clinical Reminder') {
+                $('#allergylist').val('1');
+                $('#reactionlist').val('1');
+                $('#FallRiskId').val('1');
+                $('#RestrictionTypeId').val('1');
+                $('#allergenList').hide();
+                $('#reactionList').hide();
+                $('#fallRiskList').hide();
+                $('#restrictionList').hide();
+            } else if ($("#alertType option:selected").text() == 'Advanced Directive') {
+                $('#allergylist').val('1');
+                $('#reactionlist').val('1');
+                $('#FallRiskId').val('1');
+                $('#RestrictionTypeId').val('1');
+                $('#allergenList').hide();
+                $('#reactionList').hide();
+                $('#fallRiskList').hide();
+                $('#restrictionList').hide();
+            } else if ($("#alertType option:selected").text() == 'Select Alert Type') {
+                $('#allergylist').val('2');
+                $('#reactionlist').val('2');
+                $('#FallRiskId').val('2');
+                $('#RestrictionTypeId').val('2');
+                $('#allergenList').hide();
+                $('#reactionList').hide();
+                $('#fallRiskList').hide();
+                $('#restrictionList').hide();
+            }
+        });
+        $('.chosen').chosen({ width: '30%' });
+        //var d = new Date();
+        //var fullDate = d.getDate();
+        //console.log("Date is " + fullDate);
+        //$('.startDate').val(fullDate);
+        // Set the start date to the current date
+        var currentTime = new Date();
+        var month = currentTime.getMonth() + 1;
+        var date = currentTime.getDate();
+        if (currentTime.getDate()) {
+            date = ("0" + currentTime.getDate()).slice(-2);
+        }
+        var year = currentTime.getFullYear();
+        console.log("Start date = " + year + '-' + month + '-' + date);
+        $('.startDate').val(year + '-' + month + '-' + date);
+
+        var now = new Date();
+        $('.startDate').val(now.getDate);
+           
+
+        //$("form[name='alert']").validate({
+        //    // Specify validation rules
+        //    rules: {
+        //        alerty: "required",
+        //        FallRiskId: "required"
+        //        //comments: "required"
+
+        //    },
+        //    // Specify validation error messages
+        //    messages: {
+        //        alerty: "Please select an item!",
+        //        FallRiskId: "Please select an item"
+        //        //comments: "Enter a comment, please"
+
+        //    },
+        //    // Make sure the form is submitted to the destination defined
+        //    // in the "action" attribute of the form when valid
+        //    submitHandler: function (form) {
+        //        form.submit();
+        //    }
+        //});
+    });
+
+
+</script>

@@ -1,0 +1,15 @@
+﻿@using isprojectHiT.Models
+@model IEnumerable<Gender>
+<ul>
+    @if (Model != null)
+    {
+        @foreach (Gender g in Model)
+        {
+            <li>@g.Name</li>
+        }
+    }
+    else
+    {
+        <li>No Genders found</li>
+    }
+</ul>

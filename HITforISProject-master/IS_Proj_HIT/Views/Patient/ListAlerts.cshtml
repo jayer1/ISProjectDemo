@@ -1,0 +1,165 @@
+﻿@using IS_Proj_HIT.Models
+@model ListAlertsViewModel
+@{
+    ViewData["Title"] = "Patient Alerts";
+}
+@ViewBag.Message
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary nav-fill w-100 widely">
+    <ul class="navbar-nav nav-fill w-100">
+        <li class="nav-item menu-item">
+            <button type="button" class="btn btn-danger">
+                <h4>Patient:&nbsp;@ViewBag.FirstName&nbsp;@ViewBag.MiddleName&nbsp;@ViewBag.LastName</h4>
+            </button>
+        </li>
+        @*<div class="patientBanner MRN"><span class="heading">MRN:</span><br /> @ViewBag.myMrn</div><br />*@
+        <li class="nav-item menu-item dob patientBanner"><span class="heading">DOB: </span> @ViewBag.Dob.ToShortDateString()</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">Age: </span> <span class="age"></span> years</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">MRN: </span> @ViewBag.myMrn</li>
+     </ul>
+</nav>
+<div class="card-header bg-primary text-white"><h4><i class="fas fa-exclamation-triangle alertColor"></i> Patient Alerts</h4></div>
+<br />
+@{
+    var classAlertName = "fa fa-angle-right";
+    var classLastModified = "fa fa-angle-down";
+    var classStartDate = "fa fa-angle-right";
+    var classActive = "fa fa-angle-right";
+
+    if (TempData["msg"].Equals("Sort order is by Alert Type Ascending"))
+    {
+        classAlertName = "fa fa-angle-down";
+        classLastModified = "fa fa-angle-right";
+        classStartDate = "fa fa-angle-right";
+        classActive = "fa fa-angle-right";
+    }
+    else if (TempData["msg"].Equals("Sort order is by Alert Type Descending"))
+    {
+        classAlertName = "fa fa-angle-up";
+        classLastModified = "fa fa-angle-right";
+        classStartDate = "fa fa-angle-right";
+        classActive = "fa fa-angle-right";
+    }
+
+    else if (TempData["msg"].Equals("Sort order is by Start Date Ascending"))
+    {
+        classAlertName = "fa fa-angle-right";
+        classLastModified = "fa fa-angle-right";
+        classStartDate = "fa fa-angle-down";
+        classActive = "fa fa-angle-right";
+    }
+
+    else if (TempData["msg"].Equals("Sort order is by Start Date Descending"))
+    {
+        classAlertName = "fa fa-angle-right";
+        classLastModified = "fa fa-angle-right";
+        classStartDate = "fa fa-angle-up";
+        classActive = "fa fa-angle-right";
+    }
+
+    else if (TempData["msg"].Equals("Sort order is by Active Ascending"))
+    {
+        classAlertName = "fa fa-angle-right";
+        classLastModified = "fa fa-angle-right";
+        classStartDate = "fa fa-angle-right";
+        classActive = "fa fa-angle-down";
+    }
+
+    else if (TempData["msg"].Equals("Sort order is by Active Descending"))
+    {
+        classAlertName = "fa fa-angle-right";
+        classLastModified = "fa fa-angle-right";
+        classStartDate = "fa fa-angle-right";
+        classActive = "fa fa-angle-up";
+    }
+}
+
+@if (Model.PatientAlerts.Count() == 0)
+{
+    <div class="red">
+        <p>No patient alerts have been created for this patient yet.</p>
+    </div>
+}
+else
+{
+    @*The below msg is used to decide which icon to display when sorting.*@
+    <div id="sortBy" hidden class="red">@Html.Raw(TempData["msg"])</div>
+
+
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="linky" scope="col"><i class="@classAlertName" aria-hidden="true"></i> @Html.ActionLink("Alert Type", "ListAlerts", new { sortOrder = ViewBag.AlertTypeSortParm })</th>
+
+
+                <th scope="col"><i class="@classActive" aria-hidden="true"></i> @Html.ActionLink("Active", "ListAlerts", new { sortOrder = ViewBag.ActiveSortParm })</th>
+                <th class="linky" scope="col"><i class="@classStartDate" aria-hidden="true"></i> @Html.ActionLink("Start Date", "ListAlerts", new { sortOrder = ViewBag.StartSortParm })</th>
+                <th scope="col">End Date</th>
+                <th scope="col">Comments</th>
+                <th scope="col"><i class="@classLastModified" aria-hidden="true"></i> Last Modified</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patientalerts in Model.PatientAlerts)
+            {
+            <tr>
+                <td>@patientalerts.AlertType.Name</td>
+                @*<td>@patientalerts.Mrn</td>*@
+                <td id="signIn"><a><i class="@((bool)patientalerts.IsActive ? "fas" : "far") fa-flag theFlag"></i></a></td>
+                @*<td id="signIn"><a><i class="fas fa-flag theFlag"></i></a></td>*@
+                @*<td class="hideActive">@((bool)patientalerts.IsActive ? "Yes" : "No")</td>*@
+                <td class="hideStart">@patientalerts.StartDate.ToShortDateString()</td>
+                <td class="hideEnd">@(patientalerts.EndDate.HasValue ? @patientalerts.EndDate.Value.ToString("MM/dd/yyyy") : "")</td>
+                <td class="hideComments" width="300px">@patientalerts.Comments</td>
+                <td class="hideMod">@patientalerts.LastModified</td>
+                <td><a asp-action="EditPatientAlert" asp-route-id="@patientalerts.PatientAlertId" asp-route-mrn="@patientalerts.Mrn"class="btn btn-outline-primary">Details</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a asp-action="DisplayAddAlert" asp-route-id="@ViewBag.myMrn" class="btn btn-outline-primary">
+    <i class="fas fa-exclamation-triangle alertColor"></i> Add An Alert
+</a>
+<a asp-controller="Patient" asp-action="BackToDetails" asp-route-id="@ViewBag.myMrn" class="btn btn-outline-primary">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Details
+</a>
+<hr />
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script>
+
+    // Calc age in div in Patient Banner
+    $(function () {
+        var dob = $('.dob').html();
+        var dob1 = $('.dob').val();
+        if (dob != '') {
+            var DateCreated = new Date(Date.parse(dob));
+            var today = new Date();
+
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+            $('.age').text(age);
+
+        }
+
+        if (dob1 != '') {
+            var DateCreated = new Date(Date.parse(dob1));
+            var today = new Date();
+
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+
+            $('.age').text(age);
+
+        }
+
+    });
+
+</script>

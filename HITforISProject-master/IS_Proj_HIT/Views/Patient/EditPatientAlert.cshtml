@@ -1,0 +1,160 @@
+﻿@model IS_Proj_HIT.Models.PatientAlerts
+<link rel="stylesheet" href="~/css/site.css" />
+<link rel="stylesheet" href="~/css/chosen.min.css" />
+@{
+    ViewData["Title"] = "Patient Alert Detail";
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary widely">
+    <ul class="navbar-nav nav-fill w-100">
+        <li class="nav-item menu-item">
+            <button type="button" class="btn btn-danger">
+                <h4>Patient&nbsp;@ViewBag.FirstName&nbsp;@ViewBag.MiddleName&nbsp;@ViewBag.LastName</h4>
+            </button>
+        </li>
+
+        <li class="nav-item menu-item dob patientBanner"><span class="heading">&nbsp;DOB: </span> @ViewBag.Dob.ToShortDateString()</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">Age: </span> <span class="age"></span> years</li>
+        <li class="nav-item menu-item patientBanner"><span class="heading">MRN: </span> @ViewBag.myMrn</li>
+    </ul>
+    @*<button type="button" class="btn btn-danger">
+        <span class="badge badge-danger">Patient</span>  <h4>@ViewBag.FirstName @ViewBag.MiddleName @ViewBag.LastName</h4>
+    </button><br />
+    <br /><div class="patientBanner"><span class="heading">MRN: </span> @ViewBag.myMrn</div>
+    <div class="dob patientBanner"><span class="heading">DOB: </span> @ViewBag.Dob.ToShortDateString()</div>
+    <div class="patientBanner"><span class="heading">Age: </span> <span class="age"></span> years</div>*@
+</nav>
+
+@*<div id="alertDiv">*@
+    <div class="card">
+        <div class="card-header bg-primary text-white"><h4>Patient Alert Details</h4></div>
+        <div class="card-body bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="heading">Alert Type</label>
+                        <div id="alertType">@ViewBag.MyAlertType</div>
+                        @*<div><span class="heading">Alert Type: </span><select class="takeawayborder bg-light" readonly id="alertType" asp-for=@Model.AlertTypeId asp-items="ViewBag.AlertType"></select></div>*@
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <label class="heading">Patient Alert ID</label><br />
+                        <input asp-for="@Model.PatientAlertId" class="takeawayborder bg-light" id="alertTypeId" readonly />
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <label class="heading">Active?</label><br />
+                        <div>@ViewBag.Active</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="heading">Created</label><br />
+                        <input asp-for="@Model.LastModified" class="takeawayborder bg-light" type="text" id="longer" readonly />
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <label class="heading">Start Date</label>
+                        <div>@ViewBag.StartDate</div>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <label class="heading">End Date</label><br />
+                        <div>@(ViewBag.EndDate == null ? "N/A" : @ViewBag.EndDate.ToString("MM/dd/yyyy"))</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 fallrisk">
+                        <label class="heading">Fall Risk</label><br />
+                        <div>@ViewBag.FallRisk</div>
+                    </div>
+                    <div class="col-sm-4 form-group allergy">
+                        <label class="heading">Allergy</label><br />
+                        <div>@ViewBag.AllergenValue</div>
+                    </div>
+                    <div class="col-sm-4 form-group allergy">
+                        <label class="heading">Reaction</label><br />
+                        <div>@ViewBag.ReactionValue</div>
+                    </div>
+                    <div class="col-sm-4 form-group restriction">
+                        <label class="heading">Restriction</label><br />
+                        <div>@ViewBag.RestrictionValue</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="heading">Comments</label><br />
+                        <div>@(ViewBag.Comments == null ? "N/A" : @ViewBag.Comments)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@*</div>*@
+<a asp-controller="Patient" asp-action="BackToDetails" asp-route-id="@ViewBag.myMrn" class="btn btn-outline-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Details</a>
+<a asp-controller="Patient" asp-action="ListAlerts" asp-route-id="@ViewBag.myMrn" class="btn btn-outline-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Alerts</a>
+     
+
+
+
+            
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+<script>
+
+    // Calc age in div in Patient Banner
+    $(function () {
+        var dob = $('.dob').html();
+        var dob1 = $('.dob').val();
+        if (dob != '') {
+            var DateCreated = new Date(Date.parse(dob));
+            var today = new Date();
+
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+            $('.age').text(age);
+
+        }
+
+        if (dob1 != '') {
+            var DateCreated = new Date(Date.parse(dob1));
+            var today = new Date();
+
+            var dayDiff = Math.ceil(today - DateCreated) / (1000 * 60 * 60 * 24 * 365);
+            var age = parseInt(dayDiff);
+
+            $('.age').text(age);
+
+        }
+
+        /* Alert Types
+        2 Advanced Directive
+        3 Restricted Access
+        4 Allergy
+        5 Fall Risk
+        6 Clinical Reminder*/
+
+        var alertType = $('#alertType').text();
+        if (alertType == "Advanced Directive") {
+            $('.allergy').hide();
+            $('.fallrisk').hide();
+            $('.restriction').hide();
+        } else if (alertType == "Restricted Access") {
+            $('.allergy').hide();
+            $('.fallrisk').hide();
+            $('.restriction').show();
+        } else if (alertType == "Allergy") {
+            $('.allergy').show();
+            $('.fallrisk').hide();
+            $('.restriction').hide();
+        } else if (alertType == "Fall Risk") {
+            $('.allergy').hide();
+            $('.fallrisk').show();
+            $('.restriction').hide();
+        } else if (alertType == "Clinical Reminder") {
+            $('.allergy').hide();
+            $('.fallrisk').hide();
+            $('.restriction').hide();
+        }
+
+    });
+
+</script>

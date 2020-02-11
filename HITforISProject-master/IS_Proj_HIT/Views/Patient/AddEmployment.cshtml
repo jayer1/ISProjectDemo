@@ -1,0 +1,43 @@
+﻿@model IS_Proj_HIT.Models.Employment
+<link rel="stylesheet" href="~/css/forms.css" />
+<div class="bg-primary m-1 p-1 text-white"><h4>Add Employment</h4></div>
+<form method="post" id="employment" name="employment" asp-action="AddEmployment">
+    <div class="container" asp-validation-summary="All"></div>
+    @*<div class="text-center shadebox">
+            <label>Employment ID</label><br />
+            <input asp-for="@Model.EmploymentId" pattern="54321"/>
+        </div>*@
+
+
+    <div class="col-sm-4">
+        <div class="row">
+            <label>Employer Name</label>
+            <input asp-for="@Model.EmployerName" name="employerName" placeholder="John" />
+        </div>
+        <div class="row">
+            <label>Address</label>
+            <input asp-for="@Model.Address" name="address" placeholder="123 Market St." />
+        </div>
+        <div class="row">
+            <label>Phone Number</label>
+            <input asp-for="@Model.PhoneNumber" name="PhoneNumber" />
+            @*<input asp-for="@Model.PhoneNumber" name="phone" placeholder="3215436543" />*@
+        </div>
+        <div class="row">
+            <label>Occupation</label>
+            <input asp-for="@Model.Occupation" name="occupation" placeholder="Accountant" />
+        </div>
+    </div>
+
+    <input asp-for="@Model.LastModified" type="text" readonly hidden value="@(ViewBag.LastModified ?? String.Empty)" />
+    <button class="btn-primary" type="submit">Create</button>
+</form>
+
+
+<hr />
+<a asp-action="Index">Home</a>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"</script>
+

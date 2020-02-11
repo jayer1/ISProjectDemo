@@ -1,0 +1,37 @@
+﻿@model IS_Proj_HIT.Models.Patient
+@{
+    ViewData["Title"] = "Patient Lookup";
+}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h2>Patient Lookup</h2>
+    </div>
+    <div class="card-body bg-light">
+        @*<form method="get" asp-controller="Patient" asp-action="Index">*@
+        @using (Html.BeginForm("Index", "Patient", FormMethod.Get))
+        {
+        <div class="form-group">
+
+            @Html.TextBox("searchFirst", null, new { @class = "form-control", @placeholder = "First Name", @id = "searchFirst" })
+            @Html.TextBox("searchLast", null, new { @class = "form-control", @placeholder = "Last Name", @id = "searchLast" })
+            @*<input type="text" asp-for="@Model.FirstName" class="form-control" name="first_name" id="searchFirst" placeholder="First Name">
+            <input type="text" asp-route-id="searchLast" class="form-control" name="last_name" id="searchLast" placeholder="Last Name">*@
+        </div>
+            <div class="form-group">
+                @Html.TextBox("searchMRN", null, new { @class = "form-control", @placeholder = "MRN", @id = "searchMRN" })
+                @Html.TextBox("searchSSN", null, new { @class = "form-control", @placeholder = "SSN", @id = "searchSSN" })
+                @*<input type="text" class="form-control" name="mrn" id="searchMRN" placeholder="MRN">
+                    <input type="text" class="form-control" name="ssn" id="searchSSN" placeholder="SSN">*@
+            </div>
+            <div class="form-group">
+                @Html.TextBox("searchDOB", null, new { @class = "form-control", @placeholder = "Date of Birth After This", @id = "searchDOB" })
+                @Html.TextBox("searchDOBBefore", null, new { @class = "form-control", @placeholder = "Date of Birth Before This", @id = "searchDOBBefore" })
+                @*<input type="text" class="form-control" name="frombirthDate" id="searchDOB" placeholder="Date of Birth After This">
+                <input type="text" class="form-control" name="tobirthDate" id="searchDOBBefore" placeholder="Date of Birth Before This">*@
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fas fa-search"></i> Search</button>
+            </div>
+        }
+    </div>
+</div>

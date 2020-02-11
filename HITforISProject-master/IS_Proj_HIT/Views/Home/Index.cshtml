@@ -1,0 +1,35 @@
+﻿@using isprojectHiT.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<Ethnicity>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="red">@Html.Raw(TempData["msg1"])</div>
+<br />
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="card-group" style="height:200px; text-align:center;">
+        <div class="card bg-secondary">
+            <a asp-area="" asp-controller="Home" asp-action="PatientLookup"><h2><i class="fas fa-search"></i> Patient Search</h2></a>
+        </div>
+
+        <div class="card bg-secondary">
+            <a asp-area="" asp-controller="Encounter" asp-action="Index" asp-route-filter="CheckedIn"><h2><i class="fas fa-users"></i> Checked in Patients</h2></a>
+        </div>
+
+        <div class="card bg-secondary">
+            <h2><i class="fas fa-seedling"></i><a href="http://britsystems.azurewebsites.net/"> Brit Systems</a></h2>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card-group" style="height:200px; text-align:center;">
+        <div class="card bg-secondary">
+            <h2 style="vertical-align:central">Welcome!</h2>
+            <h3>Please <a style="color:green" asp-area="Identity" asp-page="/Account/Login"> log in</a> or <a style="color:green" asp-area="Identity" asp-page="/Account/Register"> create a user account</a> to continue.</h3>
+         </div>
+    </div>
+}

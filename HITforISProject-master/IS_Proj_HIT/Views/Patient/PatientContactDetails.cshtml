@@ -1,0 +1,73 @@
+﻿@*@model IS_Proj_HIT.Models.PatientContactDetails
+    <div class="bg-primary m-1 p-1 text-white"><h4></h4></div>
+    <form method="post" id="patientEditContactDetails" name="patientEditContactDetails" asp-action="AddPatientContactDetails">
+        <div class="container" asp-validation-summary="All"></div>
+        <div class="text-center shadebox">
+            <label>MRN</label><br />
+            <input asp-for="@Model.Mrn" name="Mrn" id="mrn" data-toggle="popover" data-placement="top" title="This unique ID identifies the patient" readonly value="@(ViewBag.ContactMRN ?? String.Empty)" />
+
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Cell Phone</label><br />
+                <input asp-for="@Model.CellPhone" name="CellPhone" placeholder="John" />
+            </div>
+            <div class="col-sm-4">
+                <label>Home Phone</label><br />
+                <input asp-for="@Model.HomePhone" name="HomePhone" placeholder="X" maxlength="1" />
+            </div>
+            <div class="col-sm-4">
+                <label>Work Phone</label><br />
+                <input asp-for="@Model.WorkPhone" name="WorkPhone" placeholder="Smith" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Email Address</label><br />
+                <input asp-for="@Model.EmailAddress" name="CellPhone" placeholder="John" />
+            </div>
+            </div>
+    </form>*@
+
+@*Models are in partial views.*@
+
+@section header {
+
+}
+
+@{
+    ViewBag.Title = "Edit Customer Information";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Edit Customer Information</h2>
+    </div>
+</div>
+
+<div id="EditCustomerPartial">
+    @*@Html.Action("PatientContactDetailsPartial", new { id = Url.RequestContext.RouteData.Values["id"] })*@
+</div>
+
+<div id="SelectAddressTypePartial">
+    @*@Html.Action("AddressTypePartial", new { id = Url.RequestContext.RouteData.Values["id"] })*@
+</div>
+
+<div id="CreateAddress"></div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-12">
+            <hr />
+            <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryunobtrusive") @*For unobtrusive-ajax*@
+    @*@Scripts.Render("~/bundles/jqueryval") @*For validate and validate-unobtrusive*@
+    ...
+}

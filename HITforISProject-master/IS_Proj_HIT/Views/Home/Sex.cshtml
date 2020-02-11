@@ -1,0 +1,24 @@
+﻿@using isprojectHiT.Models
+@model IEnumerable<Sex>
+<table>
+    <thead>
+        <tr><th>Sex ID</th><th>Name</th><th>Last Modified</th></tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (Sex s in Model)
+            {
+                <tr>
+                    <td>@s.SexId</td>
+                    <td>@s.Name</td>
+                    <td>@s.LastModified</td>
+                </tr>
+            }
+        }
+        else
+        {
+                <tr><td>No Sexes found</td></tr>
+        }
+    </tbody>
+</table>

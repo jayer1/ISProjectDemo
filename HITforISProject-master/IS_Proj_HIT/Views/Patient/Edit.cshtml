@@ -1,0 +1,38 @@
+﻿@model IS_Proj_HIT.Models.Patient
+<link rel="stylesheet" href="~/css/chosen.min.css" />
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary nav-fill w-100 widely">
+    <ul class="navbar-nav nav-fill w-100">
+        <li class="nav-item menu-item">
+            <button type="button" class="btn btn-danger">
+                <h4>Patient:&nbsp;<span id="fullName"></span></h4>
+            </button>
+        </li>
+             <li class="nav-item menu-item patientBanner"><span class="heading">DOB: </span> <span id="calcDOB"></span></li>
+            <li class="nav-item menu-item patientBanner"><span class="heading">Age: </span> <span class="age" type="date"></span> years</li>
+            <li class="nav-item menu-item patientBanner"><span class="heading">MRN: </span> <span id="calcMRN" type="date"></span></li>
+    </ul>
+</nav>
+<div class="card">
+    <div class="card-header bg-primary text-white"><h4>Edit Patient</h4></div>
+    <div class="card-body bg-light">
+        <form method="post" id="patientEdit" name="patientEdit" asp-action="Update">
+
+            <partial name="~/Views/Patient/PatientFormFields.cshtml" />
+            <button type="submit" class="btn btn-outline-primary" id="formatSsnAndSubmitForm">Save</button>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<a asp-controller="home" asp-action="Index" id="homeLink" class="btn btn-outline-primary">Home</a>
+<a asp-controller="Patient" asp-action="Details" asp-route-id="@Model.Mrn"  class="btn btn-outline-primary mrn">
+    <i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back To Details</a>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"</script>
+
+

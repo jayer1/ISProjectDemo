@@ -1,0 +1,29 @@
+﻿@model IS_Proj_HIT.Models.Patient
+@*@model IS_Proj_HIT.Models.ViewModel.AddPatientsAndEmployment*@
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="card bg-secondary">
+
+    <div class="card-header bg-primary text-white"><h4>Add Patient</h4></div>
+    @**@
+    <div class="card-body bg-light">
+        <form method="post" id="patient" name="patient" asp-action="AddPatient">
+            <div class="text-center shadebox">
+                <label class="mrn">MRN</label><br />
+                <input asp-for="@Model.Mrn" class="bg-light mrn" name="Mrn" id="mrn" data-toggle="popover" data-placement="top" title="This unique ID identifies the patient" readonly value="@(ViewBag.MRN ?? String.Empty)" />
+            </div>
+            <partial name="~/Views/Patient/PatientFormFields.cshtml" />
+            <button class="btn btn-primary btn-block btn-lg" type="submit" id="formatSsnAndSubmitForm">Create</button>
+        </form>
+        @*<input type="text" readonly value="@(ViewBag.NewMRN ?? String.Empty)" />*@
+        @*<button class="btn-primary" asp-controller="Patient" asp-action="CreateMRN" type="button">Create MRN</button>*@
+        <hr />
+        <a asp-controller="home" asp-action="Index">Home</a>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"</script>
+
+
